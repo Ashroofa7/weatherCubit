@@ -8,7 +8,8 @@ import 'package:weather_app/weather_cubit/cubit.dart';
 import 'package:weather_app/weather_cubit/states.dart';
 
 void main() {
-  runApp( const MyApp());
+  runApp(
+      const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -16,16 +17,32 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(create: (context)=>WeatherCubit(),
-          child: MaterialApp(
-            title: 'Flutter Demo',
-            theme: ThemeData(
-              //primarySwatch:
-            ),
-            debugShowCheckedModeBanner: false,
-            home:  WeatherScreen(),
-          ),
+    return BlocProvider(
+      create: (context) => WeatherCubit(),
+      child: Home(),
     );
+  }
+}
 
+class Home extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<WeatherCubit, WeatherStates>(
+      builder: (context, state) {
+        return MaterialApp(
+          title: 'Flutter Demo',
+          theme: ThemeData(
+              primarySwatch: WeatherCubit.get(context)
+                      .weatherModel
+                      ?.current
+                      ?.condition
+                      ?.Getimage() ??
+                  Colors.orange,
+              ),
+          debugShowCheckedModeBanner: false,
+          home: WeatherScreen(),
+        );
+      },
+    );
   }
 }
